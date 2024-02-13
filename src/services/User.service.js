@@ -22,7 +22,22 @@ async function findAllUsers() {
     }
 }
 
+async function findOneUser(id) {
+    try {
+        const user = await User.findAll({
+            where: {
+                id: id
+            }
+        })
+        return user
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
 export default {
     createUser,
-    findAllUsers
+    findAllUsers,
+    findOneUser
 }

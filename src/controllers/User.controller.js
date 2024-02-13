@@ -35,7 +35,24 @@ async function findAllUsers(req, res) {
     }
 }
 
+async function findOneUser(req, res) {
+    try {
+        const { id } = req.params
+        const user = await UserService.findOneUser(id)
+
+        if (user) {
+            res.status(200).json({ User: user })
+        } else {
+            res.status(404).json({ error: 'Nenhum usuário encontrado' })
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: error })
+    }
+}
+
 export default {
     createUser,
-    findAllUsers
+    findAllUsers,
+    findOneUser
 }

@@ -5,5 +5,6 @@ const router = Router()
 
 router.post('/users', UserController.createUser)
 router.get('/users', UserController.findAllUsers)
+router.get('/users/:id', UserController.findOneUser)
 
 export default { router }
