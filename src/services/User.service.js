@@ -34,13 +34,24 @@ async function findOneUser(id) {
 
 async function updateUser(id, fields) {
     try {
-        if (id && fields) {
-            await User.update(fields, {
-                where: {
-                    id: id
-                }
-            })
-        }
+        await User.update(fields, {
+            where: {
+                id: id
+            }
+        })
+    }
+    catch (error) {
+        console.error(error)
+    }
+}
+
+async function deleteUser(id) {
+    try {
+        return await User.destroy({
+            where: {
+                id: id
+            }
+        })
     }
     catch (error) {
         console.error(error)
@@ -51,5 +62,6 @@ export default {
     createUser,
     findAllUsers,
     findOneUser,
-    updateUser
+    updateUser,
+    deleteUser
 }

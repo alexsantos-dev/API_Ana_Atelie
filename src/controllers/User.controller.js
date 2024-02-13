@@ -63,7 +63,7 @@ async function updateUser(req, res) {
         }
 
         if (!userId) {
-            return res.status(404).json({ error: 'Nenhum usuário encontrado' })
+            res.status(404).json({ error: 'Nenhum usuário encontrado' })
         }
 
         if (userId && Object.keys(fields).length > 0) {
@@ -80,9 +80,28 @@ async function updateUser(req, res) {
     }
 }
 
+async function deleteUser(req, res) {
+    try {
+        const { id } = req.params
+        const userId = await UserService.findOneUser(id)
+
+        if (userId) {
+            await UserService.deleteUser(id)
+            res.status(202).json({ message: 'Usuário deletado com êxito!' })
+        } else {
+            res.status(404).json({ error: 'Nenhum usuário encontrado' })
+        }
+    }
+    catch (error) {
+        console.error(error)
+        res.status(500).json({ error: error })
+    }
+}
+
 export default {
     createUser,
     findAllUsers,
     findOneUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
