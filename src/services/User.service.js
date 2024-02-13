@@ -8,7 +8,7 @@ async function createUser(name, email, password, cep) {
         return user
     }
     catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
@@ -18,26 +18,38 @@ async function findAllUsers() {
         return users
     }
     catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
 async function findOneUser(id) {
     try {
-        const user = await User.findAll({
-            where: {
-                id: id
-            }
-        })
+        const user = await User.findByPk(id)
         return user
     }
     catch (error) {
-        console.log(error)
+        console.error(error)
+    }
+}
+
+async function updateUser(id, fields) {
+    try {
+        if (id && fields) {
+            await User.update(fields, {
+                where: {
+                    id: id
+                }
+            })
+        }
+    }
+    catch (error) {
+        console.error(error)
     }
 }
 
 export default {
     createUser,
     findAllUsers,
-    findOneUser
+    findOneUser,
+    updateUser
 }

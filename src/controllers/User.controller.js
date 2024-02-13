@@ -1,4 +1,5 @@
 import UserService from '../services/User.service.js'
+import bcrypt from 'bcrypt'
 
 async function createUser(req, res) {
     try {
@@ -51,8 +52,37 @@ async function findOneUser(req, res) {
     }
 }
 
+async function updateUser(req, res) {
+    try {
+        const { id } = req.params
+        const fields = req.body
+        const userId = await UserService.findOneUser(id)
+
+        if (fields.password) {
+            fields.password = await bcrypt.hash(fields.password, 10)
+        }
+
+        if (!userId) {
+            return res.status(404).json({ error: 'Nenhum usuário encontrado' })
+        }
+
+        if (userId && Object.keys(fields).length > 0) {
+            await UserService.updateUser(id, fields)
+            res.status(200).json({ message: 'Usuário atulizado com sucesso!' })
+        }
+        else {
+            res.status(409).json({ error: 'Envie algum campo para atualizar usuário!' })
+        }
+    }
+    catch (error) {
+        console.error(error)
+        res.status(500).json({ error: error })
+    }
+}
+
 export default {
     createUser,
     findAllUsers,
-    findOneUser
+    findOneUser,
+    updateUser
 }
