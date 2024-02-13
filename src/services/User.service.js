@@ -2,60 +2,48 @@ import User from '../models/User.model.js'
 import bcrypt from 'bcrypt'
 
 async function createUser(name, email, password, cep) {
-    try {
-        const hashPassword = await bcrypt.hash(password, 10)
-        const user = await User.create({ name, email, password: hashPassword, cep })
-        return user
-    }
-    catch (error) {
-        console.error(error)
-    }
+
+    await User.sync()
+    const hashPassword = await bcrypt.hash(password, 10)
+    const user = await User.create({ name, email, password: hashPassword, cep })
+    return user
+
 }
 
 async function findAllUsers() {
-    try {
-        const users = await User.findAll()
-        return users
-    }
-    catch (error) {
-        console.error(error)
-    }
+
+    await User.sync()
+    const users = await User.findAll()
+    return users
+
+
 }
 
 async function findOneUser(id) {
-    try {
-        const user = await User.findByPk(id)
-        return user
-    }
-    catch (error) {
-        console.error(error)
-    }
+    await User.sync()
+    const user = await User.findByPk(id)
+    return user
+
 }
 
 async function updateUser(id, fields) {
-    try {
-        await User.update(fields, {
-            where: {
-                id: id
-            }
-        })
-    }
-    catch (error) {
-        console.error(error)
-    }
+    await User.sync()
+    await User.update(fields, {
+        where: {
+            id: id
+        }
+    })
+
 }
 
 async function deleteUser(id) {
-    try {
-        return await User.destroy({
-            where: {
-                id: id
-            }
-        })
-    }
-    catch (error) {
-        console.error(error)
-    }
+
+    return await User.destroy({
+        where: {
+            id: id
+        }
+    })
+
 }
 
 export default {

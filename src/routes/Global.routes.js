@@ -1,12 +1,21 @@
 import { Router } from 'express'
 import UserController from '../controllers/User.controller.js'
+import ProductController from '../controllers/Product.controller.js'
 
 const router = Router()
 
+//USERS
 router.post('/users', UserController.createUser)
 router.get('/users', UserController.findAllUsers)
 router.get('/users/:id', UserController.findOneUser)
 router.patch('/users/:id', UserController.updateUser)
 router.delete('/users/:id', UserController.deleteUser)
+
+//PRODUCTS
+router.post('/products', ProductController.createProduct)
+router.get('/products', ProductController.findAllProducts)
+router.get('/products/:id', ProductController.findOneProduct)
+router.patch('/products/:id', ProductController.updateProduct)
+router.delete('/products/:id', ProductController.deleteProduct)
 
 export default { router }

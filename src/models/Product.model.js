@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize'
 import sequelize from '../database/database.config.js'
 
-const User = sequelize.define('Users', {
+const Product = sequelize.define('Products', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -12,21 +12,26 @@ const User = sequelize.define('Users', {
         allowNull: false,
         unique: true
     },
-    email: {
+    mark: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    stock: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    image: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    cep: {
-        type: DataTypes.STRING,
-        allowNull: false
     }
 },
     {
         freezeTableName: true
     })
-export default User
+
+export default Product

@@ -14,7 +14,7 @@ async function createUser(req, res) {
                 res.status(400).json({ error: 'Erro ao criar usuário!' })
             }
         } else {
-            res.status(409).json('Envie todos os campos!')
+            res.status(409).json({ error: 'Envie todos os campos!' })
         }
     }
     catch (error) {
@@ -68,14 +68,13 @@ async function updateUser(req, res) {
 
         if (userId && Object.keys(fields).length > 0) {
             await UserService.updateUser(id, fields)
-            res.status(200).json({ message: 'Usuário atulizado com sucesso!' })
+            res.status(200).json({ message: 'Usuário atuliazado com sucesso!' })
         }
         else {
             res.status(409).json({ error: 'Envie algum campo para atualizar usuário!' })
         }
     }
     catch (error) {
-        console.error(error)
         res.status(500).json({ error: error })
     }
 }
@@ -93,7 +92,6 @@ async function deleteUser(req, res) {
         }
     }
     catch (error) {
-        console.error(error)
         res.status(500).json({ error: error })
     }
 }
