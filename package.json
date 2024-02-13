@@ -1,0 +1,26 @@
+{
+  "name": "api_ana_atelie",
+  "version": "1.0.0",
+  "description": "API dedicada ao projeto Ana Ateliê - Sonhar & Criar.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --watch index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Alex Santos - ΔS",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "sequelize": "^6.37.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
