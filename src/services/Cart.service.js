@@ -1,4 +1,5 @@
 import Cart from '../models/Cart.model.js'
+import Product from '../models/Product.model.js'
 
 await Cart.sync()
 
@@ -11,7 +12,8 @@ async function findCartItensByUser(userId) {
     const cartItens = await Cart.findAll({
         where: {
             userId: userId
-        }
+        },
+        include: Product
     })
     return cartItens
 }

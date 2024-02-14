@@ -33,4 +33,6 @@ const Cart = sequelize.define('Cart', {
     freezeTableName: true
 })
 
+Cart.belongsTo(Product, { foreignKey: 'productId' })
+
 export default Cart
