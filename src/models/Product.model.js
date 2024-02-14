@@ -10,7 +10,7 @@ const Product = sequelize.define('Products', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     },
     mark: {
         type: DataTypes.STRING,
@@ -20,6 +20,10 @@ const Product = sequelize.define('Products', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    price: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+    },
     stock: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -27,7 +31,7 @@ const Product = sequelize.define('Products', {
     image: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     }
 },
     {

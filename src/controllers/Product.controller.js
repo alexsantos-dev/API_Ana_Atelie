@@ -2,10 +2,10 @@ import ProductService from '../services/Product.service.js'
 
 async function createProduct(req, res) {
     try {
-        const { name, mark, category, stock, image } = req.body
+        const { name, mark, category, price, stock, image } = req.body
 
-        if (name && mark && category && stock && image) {
-            const product = await ProductService.createProduct(name, mark, category, stock, image)
+        if (name && mark && category && price && stock && image) {
+            const product = await ProductService.createProduct(name, mark, category, price, stock, image)
 
             if (product) {
                 res.status(200).json({ message: 'Produto criado com sucesso!' })
@@ -25,7 +25,9 @@ async function findAllProducts(req, res) {
     try {
         const products = await ProductService.findAllProducts()
         if (products.length > 0) {
-            res.status(200).json({ Products: products })
+            res.status(200).json(products)
+            console.table(products.map(product => product.dataValues))
+
         } else {
             res.status(404).json({ error: 'Nenhum produto encontrado' })
         }

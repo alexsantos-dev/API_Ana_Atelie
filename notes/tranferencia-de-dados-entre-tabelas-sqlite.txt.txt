@@ -1,0 +1,28 @@
+- Quero adicionar uma coluna x em uma determinada posição de uma tabela mas SQLite não tem compatibilidade com essa função.
+
+1 - Considere sua tabela atual como um 'backup'. 
+
+2 - Crie uma nova tabela com a mesma estrutura da sua tabela 'backup' adicioando também a coluna x na posição exata que você deseja.
+
+3 - Agora você precisa passar os dados da sua tabela 'backup' para a nova tabela. Para isso:
+
+1 - Com o comando INSERT INTO Passe as colunas da nova_tabela:
+
+INSERT INTO nova_tabela(id, name, x, age, phone)
+
+2 - Em seguida com o comando SELECT passe as colunas da tabela 'backup' incluindo a nova coluna x com FROM e o nome da tabela:
+
+SELECT id, name, x, age, phone FROM backup 
+
+2.1 - Caso a nova coluna x seja NOT NULL você precisa definir um valor (referente ao tipo da coluna, é claro). Ex:
+SELECT id, name, 999, age, phone FROM backup
+
+
+2.2 - Observe que:
+
+999 -> x
+
+3 - O comando deve ficar:
+INSERT INTO nova_tabela(id, name, x, age, phone) SELECT id, name, 999, age, phone FROM backup
+
+4 - Agora você pode executá-lo. Ao fazer isso irá observar que os dados da tabela 'backup' foram tranferidos para a nova tabela, incluindo a nova coluna x. Outra coisa importante é que como não havia a coluna x nos dados da tabela 'backup' e na nova tabela já tem essa coluna os dados tranferidos recebem o valor passado por parâmetro no comando SELECT referente a essa coluna, que no caso seria 999.
