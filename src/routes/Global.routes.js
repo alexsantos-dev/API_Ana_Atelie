@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import UserController from '../controllers/User.controller.js'
 import ProductController from '../controllers/Product.controller.js'
+import CartController from '../controllers/Cart.controller.js'
 
 const router = Router()
 
@@ -18,4 +19,8 @@ router.get('/products/:id', ProductController.findOneProduct)
 router.patch('/products/:id', ProductController.updateProduct)
 router.delete('/products/:id', ProductController.deleteProduct)
 
+//CART
+router.post('/cart', CartController.addCartItem)
+router.get('/cart/:userId', CartController.findCartItensByUser)
+router.delete('/cart/:id', CartController.deleteItemCart)
 export default { router }
