@@ -26,8 +26,6 @@ async function findAllProducts(req, res) {
         const products = await ProductService.findAllProducts()
         if (products.length > 0) {
             res.status(200).json(products)
-            console.table(products.map(product => product.dataValues))
-
         } else {
             res.status(404).json({ error: 'Nenhum produto encontrado' })
         }
