@@ -10,21 +10,38 @@ const User = sequelize.define('Users', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            len: [2, 50],
+            isAlpha: true
+        }
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: true
+        }
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
+    birthDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+            isDate: true
+        }
     },
     cep: {
         type: DataTypes.STRING,
-        allowNull: false
-    }
+        allowNull: false,
+        validate: {
+            is: /^[0-9]{5}(?:-[0-9]{3})?$/
+        }
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
 },
     {
         freezeTableName: true

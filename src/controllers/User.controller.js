@@ -3,16 +3,25 @@ import bcrypt from 'bcrypt'
 
 async function createUser(req, res) {
     try {
-        const { name, email, password, cep } = req.body
+        const { name, email, birthDate, cep, password } = req.body
+        const isStrongPassword = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/
 
-        if (name && email && password && cep) {
-            const user = await UserService.createUser(name, email, password, cep)
+        if (name && email && birthDate && cep && password) {
 
-            if (user) {
-                res.status(200).json({ message: 'Usuário criado com sucesso!' })
-            } else {
-                res.status(400).json({ error: 'Erro ao criar usuário!' })
+
+            if (isStrongPassword.test(password)) {
+                const user = await UserService.createUser(name, email, birthDate, cep, password)
+
+                if (user) {
+                    res.status(200).json({ message: 'Usuário criado com sucesso!' })
+                } else {
+                    res.status(400).json({ error: 'Erro ao criar usuário!' })
+                }
             }
+            else {
+                res.status(409).json({ error: 'A senha precisa ter pelo menos 8 caracteres, com no mínimo uma letra maiúscula, uma letra menúscula e um caractére especial' })
+            }
+
         } else {
             res.status(409).json({ error: 'Envie todos os campos!' })
         }
@@ -57,18 +66,33 @@ async function updateUser(req, res) {
         const { id } = req.params
         const fields = req.body
         const userId = await UserService.findOneUser(id)
+        const isStrongPassword = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/
 
         if (fields.password) {
-            fields.password = await bcrypt.hash(fields.password, 10)
+            if (isStrongPassword.test(fields.password)) {
+                fields.password = await bcrypt.hash(fields.password, 10)
+
+                if (!fields.password != userId.password) {
+                    return res.status(409).json({ error: 'Sua senha não pode ser igual à anterior!' })
+                }
+            }
+            else {
+                return res.status(409).json({ error: 'A senha precisa ter pelo menos 8 caracteres, com no mínimo uma letra maiúscula, uma letra minúscula e um caractére especial' })
+            }
         }
 
         if (!userId) {
-            res.status(404).json({ error: 'Nenhum usuário encontrado' })
+            return res.status(404).json({ error: 'Nenhum usuário encontrado' })
         }
 
-        if (userId && Object.keys(fields).length > 0) {
-            await UserService.updateUser(id, fields)
-            res.status(200).json({ message: 'Usuário atuliazado com sucesso!' })
+        if (userId && Object.keys(fields)) {
+            const update = await UserService.updateUser(id, fields)
+            if (update) {
+                res.status(200).json({ message: 'Usuário atualizado com sucesso!' })
+            }
+            else {
+                res.status(409).json({ error: 'Erro ao atualizar usuário!' })
+            }
         }
         else {
             res.status(409).json({ error: 'Envie algum campo para atualizar usuário!' })
