@@ -5,10 +5,11 @@ async function createUser(req, res) {
     try {
         const { name, email, birthDate, cep, password } = req.body
         const isStrongPassword = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/
+        const dateFormat = /\d{4}-\d{2}-\d{2}/
 
         if (name && email && birthDate && cep && password) {
 
-            if (isStrongPassword.test(password) && !(Object.values(req.body).some(value => value === ""))) {
+            if (isStrongPassword.test(password) && !(Object.values(req.body).some(value => value === "")) && (dateFormat.test(birthDate))) {
                 const user = await UserService.createUser(name, email, birthDate, cep, password)
 
                 if (user) {
@@ -16,6 +17,9 @@ async function createUser(req, res) {
                 } else {
                     res.status(400).json({ error: 'Erro ao criar usuário!' })
                 }
+            }
+            else if (!(dateFormat.test(birthDate))) {
+                res.status(409).json({ error: 'Data inválida!' })
             }
             else {
                 res.status(409).json({ error: 'A senha precisa ter pelo menos 8 caracteres, com no mínimo uma letra maiúscula, uma letra menúscula e um caractére especial' })
@@ -66,6 +70,7 @@ async function updateUser(req, res) {
         const fields = req.body
         const userId = await UserService.findOneUser(id)
         const isStrongPassword = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/
+        const dateFormat = /\d{4}-\d{2}-\d{2}/
 
         if (fields.password) {
             if (isStrongPassword.test(fields.password)) {
@@ -85,7 +90,7 @@ async function updateUser(req, res) {
             return res.status(404).json({ error: 'Nenhum usuário encontrado' })
         }
 
-        if (userId && (Object.keys(fields).length > 0) && !(Object.values(fields).some(value => value === ""))) {
+        if (userId && (Object.keys(fields).length > 0) && !(Object.values(fields).some(value => value === "")) && (dateFormat.test(fields.birthDate))) {
             const update = await UserService.updateUser(id, fields)
             if (update) {
                 res.status(200).json({ message: 'Usuário atualizado com sucesso!' })
@@ -93,6 +98,9 @@ async function updateUser(req, res) {
             else {
                 res.status(409).json({ error: 'Erro ao atualizar usuário!' })
             }
+        }
+        else if (!(dateFormat.test(fields.birthDate))) {
+            res.status(409).json({ error: 'Data inválida!' })
         }
         else {
             res.status(409).json({ error: 'Campos inválidos!' })

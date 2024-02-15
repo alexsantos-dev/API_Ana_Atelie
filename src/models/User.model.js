@@ -28,7 +28,7 @@ const User = sequelize.define('Users', {
         type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
-            isDate: true,
+            isDate: true
         }
     },
     cep: {
