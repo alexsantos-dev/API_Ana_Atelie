@@ -8,8 +8,7 @@ async function createUser(req, res) {
 
         if (name && email && birthDate && cep && password) {
 
-
-            if (isStrongPassword.test(password)) {
+            if (isStrongPassword.test(password) && !(Object.values(req.body).some(value => value === ""))) {
                 const user = await UserService.createUser(name, email, birthDate, cep, password)
 
                 if (user) {
@@ -70,10 +69,11 @@ async function updateUser(req, res) {
 
         if (fields.password) {
             if (isStrongPassword.test(fields.password)) {
-                fields.password = await bcrypt.hash(fields.password, 10)
-
-                if (!fields.password != userId.password) {
+                const comparePassword = await bcrypt.compare(fields.password, userId.dataValues.password)
+                if (comparePassword) {
                     return res.status(409).json({ error: 'Sua senha não pode ser igual à anterior!' })
+                } else {
+                    fields.password = await bcrypt.hash(fields.password, 10)
                 }
             }
             else {
@@ -85,7 +85,7 @@ async function updateUser(req, res) {
             return res.status(404).json({ error: 'Nenhum usuário encontrado' })
         }
 
-        if (userId && Object.keys(fields)) {
+        if (userId && (Object.keys(fields).length > 0) && !(Object.values(fields).some(value => value === ""))) {
             const update = await UserService.updateUser(id, fields)
             if (update) {
                 res.status(200).json({ message: 'Usuário atualizado com sucesso!' })
@@ -95,7 +95,7 @@ async function updateUser(req, res) {
             }
         }
         else {
-            res.status(409).json({ error: 'Envie algum campo para atualizar usuário!' })
+            res.status(409).json({ error: 'Campos inválidos!' })
         }
     }
     catch (error) {

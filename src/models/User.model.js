@@ -13,7 +13,7 @@ const User = sequelize.define('Users', {
         unique: true,
         validate: {
             len: [2, 50],
-            isAlpha: true
+            is: /^[a-zA-Z\s]*$/
         }
     },
     email: {
@@ -28,7 +28,7 @@ const User = sequelize.define('Users', {
         type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
-            isDate: true
+            isDate: true,
         }
     },
     cep: {

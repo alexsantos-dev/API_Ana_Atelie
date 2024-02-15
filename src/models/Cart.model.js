@@ -15,6 +15,9 @@ const Cart = sequelize.define('Cart', {
         references: {
             model: User,
             key: 'id'
+        },
+        validate: {
+            isUUID: true
         }
     },
     productId: {
@@ -23,11 +26,17 @@ const Cart = sequelize.define('Cart', {
         references: {
             model: Product,
             key: 'id'
+        },
+        validate: {
+            isUUID: true
         }
     },
     quantity: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isInt: true
+        }
     }
 }, {
     freezeTableName: true
