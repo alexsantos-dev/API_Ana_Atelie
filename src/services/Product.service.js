@@ -9,7 +9,9 @@ async function createProduct(name, mark, category, price, stock, image) {
 
 async function findAllProducts() {
 
-    const products = await Product.findAll()
+    const products = await Product.findAll({
+        order: [['updatedAt', 'desc']]
+    })
     return products
 
 }

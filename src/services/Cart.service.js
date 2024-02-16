@@ -13,6 +13,7 @@ async function findCartItensByUser(userId) {
         where: {
             userId: userId
         },
+        order: [['updatedAt', 'desc']],
         include: Product
     })
     return cartItens

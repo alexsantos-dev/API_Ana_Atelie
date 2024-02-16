@@ -16,9 +16,6 @@ const Cart = sequelize.define('Cart', {
             model: User,
             key: 'id'
         },
-        validate: {
-            isUUID: true
-        }
     },
     productId: {
         type: DataTypes.UUID,
@@ -27,9 +24,6 @@ const Cart = sequelize.define('Cart', {
             model: Product,
             key: 'id'
         },
-        validate: {
-            isUUID: true
-        }
     },
     quantity: {
         type: DataTypes.INTEGER,

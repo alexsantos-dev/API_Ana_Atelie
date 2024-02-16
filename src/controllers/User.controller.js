@@ -9,6 +9,10 @@ async function createUser(req, res) {
 
         if (name && email && birthDate && cep && password) {
 
+            if (birthDate && !(dateFormat.test(birthDate))) {
+                return res.status(409).json({ error: 'Data inválida!' })
+            }
+
             if (isStrongPassword.test(password) && !(Object.values(req.body).some(value => value === ""))) {
                 const user = await UserService.createUser(name, email, birthDate, cep, password)
 
@@ -21,9 +25,6 @@ async function createUser(req, res) {
 
             else {
                 res.status(409).json({ error: 'A senha precisa ter pelo menos 8 caracteres, com no mínimo uma letra maiúscula, uma letra menúscula e um caractére especial' })
-            }
-            if (birthDate && !(dateFormat.test(birthDate))) {
-                res.status(409).json({ error: 'Data inválida!' })
             }
 
         } else {
@@ -87,6 +88,10 @@ async function updateUser(req, res) {
             }
         }
 
+        if (fields.birthDate && !(dateFormat.test(fields.birthDate))) {
+            return res.status(409).json({ error: 'Data inválida!' })
+        }
+
         if (!userId) {
             return res.status(404).json({ error: 'Nenhum usuário encontrado' })
         }
@@ -100,13 +105,12 @@ async function updateUser(req, res) {
                 res.status(409).json({ error: 'Erro ao atualizar usuário!' })
             }
         }
+
         else {
             res.status(409).json({ error: 'Campos inválidos!' })
         }
 
-        if (fields.birthDate && !(dateFormat.test(fields.birthDate))) {
-            res.status(409).json({ error: 'Data inválida!' })
-        }
+
     }
     catch (error) {
         res.status(500).json({ error: error })

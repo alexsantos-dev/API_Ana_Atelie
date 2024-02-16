@@ -29,7 +29,7 @@ const User = sequelize.define('Users', {
         type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
-            isDate: true
+            is: /\d{4}-\d{2}-\d{2}/
         }
     },
     cep: {

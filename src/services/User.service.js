@@ -1,3 +1,4 @@
+import sequelize from '../database/database.config.js'
 import User from '../models/User.model.js'
 import bcrypt from 'bcrypt'
 
@@ -13,7 +14,9 @@ async function createUser(name, email, birthDate, cep, password) {
 async function findAllUsers() {
 
     await User.sync()
-    const users = await User.findAll()
+    const users = await User.findAll({
+        order: [['updatedAt', 'desc']]
+    })
     return users
 
 
