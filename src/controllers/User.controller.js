@@ -9,7 +9,7 @@ async function createUser(req, res) {
 
         if (name && email && birthDate && cep && password) {
 
-            if (isStrongPassword.test(password) && !(Object.values(req.body).some(value => value === "")) && (dateFormat.test(birthDate))) {
+            if (isStrongPassword.test(password) && !(Object.values(req.body).some(value => value === ""))) {
                 const user = await UserService.createUser(name, email, birthDate, cep, password)
 
                 if (user) {
@@ -18,11 +18,12 @@ async function createUser(req, res) {
                     res.status(400).json({ error: 'Erro ao criar usuário!' })
                 }
             }
-            else if (!(dateFormat.test(birthDate))) {
-                res.status(409).json({ error: 'Data inválida!' })
-            }
+
             else {
                 res.status(409).json({ error: 'A senha precisa ter pelo menos 8 caracteres, com no mínimo uma letra maiúscula, uma letra menúscula e um caractére especial' })
+            }
+            if (birthDate && !(dateFormat.test(birthDate))) {
+                res.status(409).json({ error: 'Data inválida!' })
             }
 
         } else {
@@ -90,7 +91,7 @@ async function updateUser(req, res) {
             return res.status(404).json({ error: 'Nenhum usuário encontrado' })
         }
 
-        if (userId && (Object.keys(fields).length > 0) && !(Object.values(fields).some(value => value === "")) && (dateFormat.test(fields.birthDate))) {
+        if (userId && (Object.keys(fields).length > 0) && !(Object.values(fields).some(value => value === ""))) {
             const update = await UserService.updateUser(id, fields)
             if (update) {
                 res.status(200).json({ message: 'Usuário atualizado com sucesso!' })
@@ -99,11 +100,12 @@ async function updateUser(req, res) {
                 res.status(409).json({ error: 'Erro ao atualizar usuário!' })
             }
         }
-        else if (!(dateFormat.test(fields.birthDate))) {
-            res.status(409).json({ error: 'Data inválida!' })
-        }
         else {
             res.status(409).json({ error: 'Campos inválidos!' })
+        }
+
+        if (fields.birthDate && !(dateFormat.test(fields.birthDate))) {
+            res.status(409).json({ error: 'Data inválida!' })
         }
     }
     catch (error) {
