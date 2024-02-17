@@ -51,6 +51,21 @@ async function findOneProduct(req, res) {
     }
 }
 
+async function findProductsByKeyword(req, res) {
+    try {
+        const key = req.query.key
+        const products = await ProductService.findProductsByKeyword(key)
+        if (products.length > 0) {
+            res.status(200).json(products)
+        } else {
+            res.status(404).json({ error: 'Nenhum produto encontrado' })
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: error })
+    }
+}
+
 async function findProductsByCategory(req, res) {
     try {
         const category = req.query.category
@@ -125,6 +140,7 @@ export default {
     createProduct,
     findAllProducts,
     findOneProduct,
+    findProductsByKeyword,
     findProductsByCategory,
     findProductsByPrice,
     updateProduct,

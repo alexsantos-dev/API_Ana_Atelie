@@ -15,6 +15,7 @@ router.delete('/users/:id', UserController.deleteUser)
 //PRODUCTS
 router.post('/products', ProductController.createProduct)
 router.get('/products', ProductController.findAllProducts)
+router.get('/products_name', ProductController.findProductsByKeyword)
 router.get('/products_category', ProductController.findProductsByCategory)
 router.get('/products_price', ProductController.findProductsByPrice)
 router.get('/products/:id', ProductController.findOneProduct)

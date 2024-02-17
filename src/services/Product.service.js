@@ -1,3 +1,4 @@
+import { Sequelize } from 'sequelize'
 import Product from '../models/Product.model.js'
 
 async function createProduct(name, mark, category, price, stock, image) {
@@ -21,6 +22,24 @@ async function findOneProduct(id) {
     return product
 }
 
+async function findProductsByKeyword(key) {
+    const keywords = key.split(' ')
+    const normalizedKeywords = keywords.map(keyword => keyword.toLowerCase())
+
+    const products = await Product.findAll({
+        where: {
+            [Sequelize.Op.or]: normalizedKeywords.map(keyword => ({
+                name: {
+                    [Sequelize.Op.like]: `%${keyword}%`
+                }
+            }))
+        },
+        order: [['updatedAt', 'DESC']]
+    })
+    return products
+}
+
+
 async function findProductsByCategory(category) {
 
     const products = await Product.findAll({
@@ -39,6 +58,7 @@ async function findProductsByPrice(price) {
     })
     return products.filter(product => product.price <= price)
 }
+
 
 async function updateProduct(id, fields) {
 
@@ -64,6 +84,7 @@ export default {
     createProduct,
     findAllProducts,
     findOneProduct,
+    findProductsByKeyword,
     findProductsByCategory,
     findProductsByPrice,
     updateProduct,
