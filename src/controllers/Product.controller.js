@@ -51,6 +51,36 @@ async function findOneProduct(req, res) {
     }
 }
 
+async function findProductsByCategory(req, res) {
+    try {
+        const category = req.query.category
+        const products = await ProductService.findProductsByCategory(category)
+        if (products.length > 0) {
+            res.status(200).json(products)
+        } else {
+            res.status(404).json({ error: 'Nenhum produto encontrado' })
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: error })
+    }
+}
+
+async function findProductsByPrice(req, res) {
+    try {
+        const price = req.query.price
+        const products = await ProductService.findProductsByPrice(price)
+        if (products.length > 0) {
+            res.status(200).json(products)
+        } else {
+            res.status(404).json({ error: 'Nenhum produto encontrado' })
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: error })
+    }
+}
+
 async function updateProduct(req, res) {
     try {
         const { id } = req.params
@@ -95,6 +125,8 @@ export default {
     createProduct,
     findAllProducts,
     findOneProduct,
+    findProductsByCategory,
+    findProductsByPrice,
     updateProduct,
     deleteProduct
 }

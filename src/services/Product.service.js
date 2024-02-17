@@ -21,6 +21,25 @@ async function findOneProduct(id) {
     return product
 }
 
+async function findProductsByCategory(category) {
+
+    const products = await Product.findAll({
+        where: {
+            category: category
+        },
+        order: [['updatedAt', 'desc']]
+    })
+    return products
+}
+
+async function findProductsByPrice(price) {
+
+    const products = await Product.findAll({
+        order: [['updatedAt', 'desc']]
+    })
+    return products.filter(product => product.price <= price)
+}
+
 async function updateProduct(id, fields) {
 
     await Product.update(fields, {
@@ -45,6 +64,8 @@ export default {
     createProduct,
     findAllProducts,
     findOneProduct,
+    findProductsByCategory,
+    findProductsByPrice,
     updateProduct,
     deleteProduct
 }

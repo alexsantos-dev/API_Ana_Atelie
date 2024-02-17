@@ -14,7 +14,6 @@ const User = sequelize.define('Users', {
         validate: {
             len: [2, 50],
             is: /^[\u00C0-\u017Fa-zA-Z\s]*$/
-
         }
     },
     email: {
